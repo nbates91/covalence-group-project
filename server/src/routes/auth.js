@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { encode } from '../utils/tokens';
+import { generateHash } from '../utils/bcrypt'
 
 let router = Router();
 
