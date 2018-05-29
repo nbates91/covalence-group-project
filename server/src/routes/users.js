@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { tokenMiddleware, isLoggedIn } from '../middleware/auth.mw';
 import Table from '../table';
 import { callProcedure } from '../config/db';
+import { generateHash } from '../utils/bcrypt'
 
 let router = Router();
 const usersTable = new Table('users');
@@ -62,16 +63,35 @@ router.get('/:userid/image/:imageid', (req, res) => {
 
 // creates a user
 router.post('/', (req, res) => {
-	usersTable
-		.insert(req.body)
-		.then(results => {
-			res.json(results);
+	generateHash(req.body.password).then(hash => {
+		tableName.insert({
+			user: req.body.user,
+			email: req.body.email,
+			password: hash
 		})
-		.catch(err => {
-			console.log(err);
-			res.sendStatus(500);
-		});
-});
+			.then(results => {
+				res.json(results).send(200)
+			})
+			.catch(err => {
+				console.log(err);
+				res.sendStatus(500);
+			});
+	}).catch(err => {
+		console.log(err);
+		res.sendStatus(500);
+	})
+})
+// router.post('/', (req, res) => {
+// 	usersTable
+// 		.insert(req.body)
+// 		.then(results => {
+// 			res.json(results);
+// 		})
+// 		.catch(err => {
+// 			console.log(err);
+// 			res.sendStatus(500);
+// 		});
+// });
 
 // updates user information
 router.put('/:id', (req, res) => {
