@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import authRouter from './auth';
 import usersRouter from './users';
+import contactRouter from './contactform'
 import locationsRouter from './locations';
 import routesRouter from './routes';
 import { isLoggedIn, tokenMiddleware } from '../middleware/auth.mw';
@@ -8,6 +9,7 @@ import { isLoggedIn, tokenMiddleware } from '../middleware/auth.mw';
 let router = Router();
 
 router.use('/auth', authRouter);
+router.use('/contact', contactRouter);
 
 // router
 // 	.route('*')
