@@ -65,9 +65,8 @@ router.get('/:userid/image/:imageid', (req, res) => {
 router.post('/', (req, res) => {
 	generateHash(req.body.hash).then(hash => {
 		usersTable.insert({
-			user: req.body.user,
 			email: req.body.email,
-			password: hash
+			hash: hash
 		})
 			.then(results => {
 				res.json(results).send(200)
