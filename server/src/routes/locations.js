@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:locationid', (req, res) => {
-	callProcedure('spGetLocation', req.params.locationid)
+	callProcedure('spGetLocation', [req.params.locationid])
 		.then(results => {
 			res.json(results[0]);
 		})
