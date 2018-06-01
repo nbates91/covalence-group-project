@@ -45,6 +45,7 @@ router.put('/:locationid', (req, res) => {
 		.update(req.params.locationid, req.body)
 		.then(results => {
 			res.json(results);
+			console.log(results);
 		})
 		.catch(err => {
 			console.log(err);
