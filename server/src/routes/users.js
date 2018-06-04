@@ -80,24 +80,21 @@ router.post('/', (req, res) => {
 		res.sendStatus(500);
 	})
 })
-// router.post('/', (req, res) => {
-// 	usersTable
-// 		.insert(req.body)
-// 		.then(results => {
-// 			res.json(results);
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 			res.sendStatus(500);
-// 		});
-// });
 
 // updates user information
 router.put('/:id', (req, res) => {
-	usersTable
-		.update(req.params.id, req.body)
-		.then(results => {
-			res.json(results);
+	generateHash(req.body.hash)
+		.then(hash => {
+			req.body.hash = hash;
+			usersTable
+				.update(req.params.id, req.body)
+					.then(results => {
+						res.json(results);
+					})
+					.catch(err => {
+						console.log(err);
+						res.sendStatus(500);
+					});
 		})
 		.catch(err => {
 			console.log(err);
