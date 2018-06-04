@@ -1,9 +1,14 @@
 import { Router } from 'express';
-// import { pushImg, getImg } from '../config/cloudinary';
 import * as cloudinary from 'cloudinary';
 import { config } from '../config';
+import Table from '../table';
+import { user } from '../config/passport';
+import { tokenMiddleware } from '../middleware/auth.mw';
+import { callProcedure } from '../config/db';
 
 let router = Router();
+const imagesTable = new Table('images');
+const userImagesTable = new Table('usersimages');
 
 cloudinary.config({
     cloud_name: "hxkggeeaw",
@@ -11,34 +16,40 @@ cloudinary.config({
     api_secret: config.CLOUDINARY_API_SECRET
 })
 
+router.use(tokenMiddleware);
+
 router.post('/', (req, res) => {
+    console.log('before Cloudinary')
     cloudinary.uploader.upload(req.body.url)
         .then(results => {
-            res.json(results);
-            console.log(results);
-        })
-        .catch(err => {
+            console.log(results)
+            return imagesTable
+                .insert({ url: results.secure_url })
+        }).then((results) => {
+            return userImagesTable
+                .insert({ userid: req.user.id, imageid: results.id })
+        }).then(() => {
+            res.sendStatus(201);
+        }).catch(err => {
             console.log(err);
             res.sendStatus(500);
         })
 });
 
-router.get('/:img_id', (req, res) => {
-    cloudinary.image(`http://res.cloudinary.com/hxkggeeaw/image/upload/v1527875689/${req.params.image_id}.jpg`)
-        .then(results => {
-            res.json(results);
-            console.log(resutls);
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        })
+router.get('/:user_id', (req, res) => {
+    callProcedure()
 })
 
-// cloudinary.uploader.upload("https://i.redd.it/5yerle592e111.jpg", (res) => {
-//     console.log(res);
+// router.get('/:img_id', (req, res) => {
+//     cloudinary.url(req.params.img_id)
+//         .then(results => {
+//             res.json(results);
+//             console.log(results);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.sendStatus(500);
+//         })
 // })
-
-// cloudinary.image(public_id, alt)
 
 export default router;

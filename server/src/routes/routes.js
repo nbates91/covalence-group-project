@@ -31,7 +31,7 @@ router.get('/:routeid', (req, res) => {
 
 // get all stops related to one route by id
 router.get('/stops/:routeStopsId', (req, res) => {
-	callProcedure('spGetRouteLocations', req.params.routeStopsId)
+	callProcedure('spGetRouteLocations', [req.params.routeStopsId])
 		.then(results => {
 			res.json(results[0]);
 		})
