@@ -20,7 +20,7 @@ router.use(tokenMiddleware);
 
 router.post('/', (req, res) => {
     console.log('before Cloudinary')
-    cloudinary.uploader.upload(req.body.url)
+    cloudinary.v2.uploader.upload(req.file)
         .then(results => {
             console.log(results)
             return imagesTable
