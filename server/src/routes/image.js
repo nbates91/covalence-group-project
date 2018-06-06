@@ -20,7 +20,7 @@ router.use(tokenMiddleware);
 
 router.post('/', (req, res) => {
     console.log('before Cloudinary')
-    cloudinary.v2.uploader.upload(req.file)
+    cloudinary.v2.uploader.upload(req.form_body.file)
         .then(results => {
             console.log(results)
             return imagesTable
@@ -37,7 +37,14 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:user_id', (req, res) => {
-    callProcedure()
+    callProcedure('spGetImagesByUser', req.params.user_id)
+        .then(results => {
+            res.json(results[0]);
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        });
 })
 
 // router.get('/:img_id', (req, res) => {
