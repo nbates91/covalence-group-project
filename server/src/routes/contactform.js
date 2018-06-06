@@ -7,7 +7,7 @@ router.post('/', (req, res, next) => {
     let messageBody = `Name: ${req.body.name}
                         Email: ${req.body.email}
                         Message: ${req.body.message}`
-    sendEmail('Ghnguyen91@gmail.com', 'no-reply-mg@craftcrawls.com', 'New Feedback Form Submission', messageBody)
+    sendEmail('craft.crawls18@gmail.com', 'no-reply-mg@craftcrawls.com', 'New Feedback Form Submission', messageBody)
         .then((response) => {
             res.sendStatus(201);
         }).catch((err) => {

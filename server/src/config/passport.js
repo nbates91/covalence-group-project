@@ -5,7 +5,7 @@ import Table from '../table';
 import { encode, decode } from '../utils/tokens';
 import { checkPassword } from '../utils/bcrypt';
 
-let usersTable = new Table('authors');
+let usersTable = new Table('users');
 let tokensTable = new Table('tokens');
 
 function configurePassport(app) {
@@ -18,8 +18,10 @@ function configurePassport(app) {
             // array destructuring. find() will return an array of results.
             // destructuring the first (and hopefully only) result into the user variable
             let [user] = await usersTable.find({ email });
-            if (user && user.password) {
-                let matches = await checkPassword(password, user.password)
+            console.log(user)
+            if (user && user.hash) {
+                let matches = await checkPassword(password, user.hash)
+                console.log(matches)
                 if (matches) {
                     // the password is correct
                     let idObj = await tokensTable.insert({

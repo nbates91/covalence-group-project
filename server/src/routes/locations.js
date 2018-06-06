@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:locationid', (req, res) => {
-	callProcedure('spGetLocation', req.params.locationid)
+	callProcedure('spGetLocation', [req.params.locationid])
 		.then(results => {
 			res.json(results[0]);
 		})
@@ -45,6 +45,7 @@ router.put('/:locationid', (req, res) => {
 		.update(req.params.locationid, req.body)
 		.then(results => {
 			res.json(results);
+			console.log(results);
 		})
 		.catch(err => {
 			console.log(err);
