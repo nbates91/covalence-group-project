@@ -66,10 +66,13 @@ router.post('/', (req, res) => {
 	generateHash(req.body.hash).then(hash => {
 		usersTable.insert({
 			email: req.body.email,
-			hash: hash
+			hash: hash,
+			role: 'user',
+			level: 0,
+			numberofcheckins: 0,
 		})
 			.then(results => {
-				res.json(results)
+				res.json(results);
 			})
 			.catch(err => {
 				console.log(err);
