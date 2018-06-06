@@ -72,6 +72,7 @@ router.post('/', (req, res) => {
 			numberofcheckins: 0,
 		})
 			.then(results => {
+				console("User was posted to the DB");
 				res.json(results);
 			})
 			.catch(err => {
@@ -81,8 +82,8 @@ router.post('/', (req, res) => {
 	}).catch(err => {
 		console.log(err);
 		res.sendStatus(500);
-	})
-})
+	});
+});
 
 // updates user information
 router.put('/:id', (req, res) => {
