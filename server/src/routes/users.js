@@ -70,6 +70,7 @@ router.post('/', (req, res) => {
 			role: 'user',
 			level: 0,
 			numberofcheckins: 0,
+			activerouteid: null
 		})
 			.then(results => {
 				console("User was posted to the DB");
