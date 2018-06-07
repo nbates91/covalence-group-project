@@ -90,7 +90,7 @@ router.put('/:id', (req, res) => {
 	if (req.body.password) {
 		generateHash(req.body.password)
 		.then(hash => {
-			req.body.hash = hash;
+			req.body.password = hash;
 		})
 		.catch(err => {
 			console.log(err);
@@ -98,7 +98,13 @@ router.put('/:id', (req, res) => {
 		});
 	}
 	usersTable
-		.update(req.params.id, req.body)
+		.update(req.params.id, {
+			email: req.body.email,
+			hash: req.body.newPassword,
+			role: req.body.role,
+			level: req.body.level,
+			numberofcheckins: req.body.numberofcheckins,
+		})
 		.then(results => {
 			res.json(results);
 		})
