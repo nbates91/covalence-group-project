@@ -101,7 +101,7 @@ router.put('/:id', (req, res) => {
 	usersTable
 		.update(req.params.id, {
 			email: req.body.email,
-			hash: req.body.newPassword,
+			hash: req.body.hash,
 			role: req.body.role,
 			level: req.body.level,
 			numberofcheckins: req.body.numberofcheckins,
