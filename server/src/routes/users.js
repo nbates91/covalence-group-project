@@ -104,6 +104,7 @@ router.put('/:id', (req, res) => {
 			role: req.body.role,
 			level: req.body.level,
 			numberofcheckins: req.body.numberofcheckins,
+			activerouteid: req.body.activerouteid
 		})
 		.then(results => {
 			res.json(results);
