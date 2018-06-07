@@ -20,20 +20,21 @@ router.use(tokenMiddleware);
 
 router.post('/', (req, res) => {
     console.log('before Cloudinary')
-    cloudinary.v2.uploader.upload(req.form_body.file)
-        .then(results => {
-            console.log(results)
-            return imagesTable
-                .insert({ url: results.secure_url })
-        }).then((results) => {
-            return userImagesTable
-                .insert({ userid: req.user.id, imageid: results.id })
-        }).then(() => {
-            res.sendStatus(201);
-        }).catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        })
+    console.log(req.file.path)
+    // cloudinary.v2.uploader.upload(req.files.file)
+    //     .then(results => {
+    //         console.log(results)
+    //         return imagesTable
+    //             .insert({ url: results.secure_url })
+    //     }).then((results) => {
+    //         return userImagesTable
+    //             .insert({ userid: req.user.id, imageid: results.id })
+    //     }).then(() => {
+    //         res.sendStatus(201);
+    //     }).catch(err => {
+    //         console.log(err);
+    //         res.sendStatus(500);
+    //     })
 });
 
 router.get('/:user_id', (req, res) => {
