@@ -90,7 +90,7 @@ router.put('/:id', (req, res) => {
 	let usersHash = req.body.hash;
 	generateHash(req.body.password)
 		.then(hash => {
-			if (req.body.password != null) {
+			if (req.body.password) {
 				usersHash = hash;
 			}
 			usersTable
