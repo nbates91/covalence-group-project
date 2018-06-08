@@ -10,16 +10,16 @@ let router = Router();
 const imagesTable = new Table('images');
 const userImagesTable = new Table('usersimages');
 
-cloudinary.config({
-    cloud_name: "hxkggeeaw",
-    api_key: config.CLOUDINARY_API_KEY,
-    api_secret: config.CLOUDINARY_API_SECRET
-})
+// cloudinary.config({
+//     cloud_name: "hxkggeeaw",
+//     api_key: config.CLOUDINARY_API_KEY,
+//     api_secret: config.CLOUDINARY_API_SECRET
+// })
 
 // router.use(tokenMiddleware);
 
-router.post('/', async (req, res) => {
-    await cloudinary.v2.uploader.upload(req.body.url, function (error, result) { console.log(result); });
+router.post('/', (req, res) => {
+    // await cloudinary.v2.uploader.upload(req.body.url, function (error, result) { console.log(result); });
     imagesTable.insert({
         url: req.body.url
     })
