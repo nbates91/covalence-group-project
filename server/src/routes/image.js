@@ -10,11 +10,11 @@ let router = Router();
 const imagesTable = new Table('images');
 const userImagesTable = new Table('usersimages');
 
-// cloudinary.config({
-//     cloud_name: "hxkggeeaw",
-//     api_key: config.CLOUDINARY_API_KEY,
-//     api_secret: config.CLOUDINARY_API_SECRET
-// })
+cloudinary.config({
+    cloud_name: "hxkggeeaw",
+    api_key: config.CLOUDINARY_API_KEY,
+    api_secret: config.CLOUDINARY_API_SECRET
+})
 
 // router.use(tokenMiddleware);
 
