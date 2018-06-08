@@ -18,7 +18,8 @@ const userImagesTable = new Table('usersimages');
 
 // router.use(tokenMiddleware);
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    await cloudinary.v2.uploader.upload(req.body.url, function (error, result) { console.log(result); });
     imagesTable.insert({
         url: req.body.url
     })
