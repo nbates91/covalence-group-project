@@ -87,6 +87,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+	console.log(req.body);
 	let usersHash = req.body.hash;
 	generateHash(req.body.password)
 		.then(hash => {
