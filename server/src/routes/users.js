@@ -88,10 +88,11 @@ router.post('/', (req, res) => {
 
 // updates user information
 router.put('/:id', (req, res) => {
+	let usersHash = req.body.hash;
 	if (req.body.password) {
 		generateHash(req.body.password)
 		.then(hash => {
-			req.body.password = hash;
+			usersHash = hash; 
 		})
 		.catch(err => {
 			console.log(err);
@@ -101,7 +102,7 @@ router.put('/:id', (req, res) => {
 	usersTable
 		.update(req.params.id, {
 			email: req.body.email,
-			hash: req.body.hash,
+			hash: usersHash,
 			role: req.body.role,
 			level: req.body.level,
 			numberofcheckins: req.body.numberofcheckins,
