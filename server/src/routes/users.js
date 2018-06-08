@@ -86,36 +86,66 @@ router.post('/', (req, res) => {
 	});
 });
 
-// updates user information
 router.put('/:id', (req, res) => {
 	let usersHash = req.body.hash;
-	if (req.body.password) {
-		generateHash(req.body.password)
+	generateHash(req.body.password)
 		.then(hash => {
-			usersHash = hash; 
-		})
-		.catch(err => {
-			console.log(err);
-			res.sendStatus(500);
-		});
-	}
-	usersTable
-		.update(req.params.id, {
-			email: req.body.email,
-			hash: usersHash,
-			role: req.body.role,
-			level: req.body.level,
-			numberofcheckins: req.body.numberofcheckins,
-			activerouteid: req.body.activerouteid
-		})
-		.then(results => {
-			res.json(results);
+			if (req.body.password != null) {
+				usersHash = hash;
+			}
+			usersTable
+				.update(req.params.id, {
+					email: req.body.email,
+					hash: usersHash,
+					role: req.body.role,
+					level: req.body.level,
+					numberofcheckins: req.body.numberofcheckins,
+					activerouteid: req.body.activerouteid
+				})
+				.then(results => {
+					res.json(results);
+				})
+				.catch(err => {
+					console.log(err);
+					res.sendStatus(500);
+				});
 		})
 		.catch(err => {
 			console.log(err);
 			res.sendStatus(500);
 		});
 });
+
+// updates user information
+// router.put('/:id', (req, res) => {
+// 	let usersHash = req.body.hash;
+// 	if (req.body.password) {
+// 		generateHash(req.body.password)
+// 		.then(hash => {
+// 			usersHash = hash; 
+// 		})
+// 		.catch(err => {
+// 			console.log(err);
+// 			res.sendStatus(500);
+// 		});
+// 	}
+// 	usersTable
+// 		.update(req.params.id, {
+// 			email: req.body.email,
+// 			hash: usersHash,
+// 			role: req.body.role,
+// 			level: req.body.level,
+// 			numberofcheckins: req.body.numberofcheckins,
+// 			activerouteid: req.body.activerouteid
+// 		})
+// 		.then(results => {
+// 			res.json(results);
+// 		})
+// 		.catch(err => {
+// 			console.log(err);
+// 			res.sendStatus(500);
+// 		});
+// });
 
 // deletes user
 router.delete('/:id', (req, res) => {
