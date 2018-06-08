@@ -86,34 +86,28 @@ router.post('/', (req, res) => {
 	});
 });
 
-router.put('/:id', (req, res) => {
-	console.log(req.body);
+router.put('/:id', async (req, res) => {
 	let usersHash = req.body.hash;
-	generateHash(req.body.password)
-		.then(hash => {
-			if (req.body.password) {
-				usersHash = hash;
-			}
-			usersTable
-				.update(req.params.id, {
-					email: req.body.email,
-					hash: usersHash,
-					role: req.body.role,
-					level: req.body.level,
-					numberofcheckins: req.body.numberofcheckins,
-					activerouteid: req.body.activerouteid
-				})
-				.then(results => {
-					res.json(results);
-				})
-				.catch(err => {
-					console.log(err);
-					res.sendStatus(500);
-				});
+	if (req.body.password) {
+		let hash = await generateHash(req.body.password);
+		usersHash = hash;
+		// req.body.hash = hash;
+	}
+	usersTable
+		.update(req.params.id, {
+			email: req.body.email,
+			hash: usersHash,
+			role: req.body.role,
+			level: req.body.level,
+			numberofcheckins: req.body.numberofcheckins,
+			activerouteid: req.body.activerouteid
+		})
+		.then(results => {
+			res.json(results);
 		})
 		.catch(err => {
 			console.log(err);
-			res.sendStatus(500);
+			res.sendStatus(500);	
 		});
 });
 
@@ -124,6 +118,7 @@ router.put('/:id', (req, res) => {
 // 		generateHash(req.body.password)
 // 		.then(hash => {
 // 			usersHash = hash; 
+
 // 		})
 // 		.catch(err => {
 // 			console.log(err);
