@@ -73,7 +73,6 @@ router.post('/', (req, res) => {
 			activerouteid: null
 		})
 			.then(results => {
-				console("User was posted to the DB");
 				res.json(results);
 			})
 			.catch(err => {
@@ -91,7 +90,6 @@ router.put('/:id', async (req, res) => {
 	if (req.body.password) {
 		let hash = await generateHash(req.body.password);
 		usersHash = hash;
-		// req.body.hash = hash;
 	}
 	usersTable
 		.update(req.params.id, {
@@ -110,38 +108,6 @@ router.put('/:id', async (req, res) => {
 			res.sendStatus(500);	
 		});
 });
-
-// updates user information
-// router.put('/:id', (req, res) => {
-// 	let usersHash = req.body.hash;
-// 	if (req.body.password) {
-// 		generateHash(req.body.password)
-// 		.then(hash => {
-// 			usersHash = hash; 
-
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 			res.sendStatus(500);
-// 		});
-// 	}
-// 	usersTable
-// 		.update(req.params.id, {
-// 			email: req.body.email,
-// 			hash: usersHash,
-// 			role: req.body.role,
-// 			level: req.body.level,
-// 			numberofcheckins: req.body.numberofcheckins,
-// 			activerouteid: req.body.activerouteid
-// 		})
-// 		.then(results => {
-// 			res.json(results);
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 			res.sendStatus(500);
-// 		});
-// });
 
 // deletes user
 router.delete('/:id', (req, res) => {

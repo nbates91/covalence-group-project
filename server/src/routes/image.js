@@ -19,23 +19,49 @@ cloudinary.config({
 router.use(tokenMiddleware);
 
 router.post('/', (req, res) => {
-    console.log('before Cloudinary')
-    console.log(req.file.path)
-    // cloudinary.v2.uploader.upload(req.files.file)
-    //     .then(results => {
-    //         console.log(results)
-    //         return imagesTable
-    //             .insert({ url: results.secure_url })
-    //     }).then((results) => {
-    //         return userImagesTable
-    //             .insert({ userid: req.user.id, imageid: results.id })
-    //     }).then(() => {
-    //         res.sendStatus(201);
-    //     }).catch(err => {
-    //         console.log(err);
-    //         res.sendStatus(500);
-    //     })
+    imagesTable.insert({
+        url: req.body.url
+    })
+    .then(results => {
+        res.json(results);
+    })
+    .then(idOfInsertedImage => {
+        userImagesTable.insert({
+            userid: req.body.userid,
+            imageid: idOfInsertedImage
+        })
+        .then(results => {
+            res.json(results);
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
 });
+
+// router.post('/', (req, res) => {
+//     console.log('before Cloudinary')
+//     console.log(req.file.path)
+//     // cloudinary.v2.uploader.upload(req.files.file)
+//     //     .then(results => {
+//     //         console.log(results)
+//     //         return imagesTable
+//     //             .insert({ url: results.secure_url })
+//     //     }).then((results) => {
+//     //         return userImagesTable
+//     //             .insert({ userid: req.user.id, imageid: results.id })
+//     //     }).then(() => {
+//     //         res.sendStatus(201);
+//     //     }).catch(err => {
+//     //         console.log(err);
+//     //         res.sendStatus(500);
+//     //     })
+// });
 
 router.get('/:user_id', (req, res) => {
     callProcedure('spGetImagesByUser', req.params.user_id)
