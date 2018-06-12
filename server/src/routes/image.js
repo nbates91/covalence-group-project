@@ -1,6 +1,4 @@
 import { Router } from 'express';
-import * as cloudinary from 'cloudinary';
-import { config } from '../config';
 import Table from '../table';
 import { user } from '../config/passport';
 import { tokenMiddleware } from '../middleware/auth.mw';
@@ -10,59 +8,49 @@ let router = Router();
 const imagesTable = new Table('images');
 const userImagesTable = new Table('usersimages');
 
-// cloudinary.config({
-//     cloud_name: "hxkggeeaw",
-//     api_key: config.CLOUDINARY_API_KEY,
-//     api_secret: config.CLOUDINARY_API_SECRET
-// })
 
-// router.use(tokenMiddleware);
-
-router.post('/', (req, res) => {
-    // await cloudinary.v2.uploader.upload(req.body.url, function (error, result) { console.log(result); });
-    imagesTable.insert({
-        url: req.body.url
-    })
-    .then(results => {
-        res.json(results);
-    })
-    .then(idOfInsertedImage => {
-        userImagesTable.insert({
-            userid: req.body.userid,
-            imageid: idOfInsertedImage
-        })
-        .then(results => {
-            res.json(results);
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
+router.use(tokenMiddleware);
 
 // router.post('/', (req, res) => {
-//     console.log('before Cloudinary')
-//     console.log(req.file.path)
-//     // cloudinary.v2.uploader.upload(req.files.file)
-//     //     .then(results => {
-//     //         console.log(results)
-//     //         return imagesTable
-//     //             .insert({ url: results.secure_url })
-//     //     }).then((results) => {
-//     //         return userImagesTable
-//     //             .insert({ userid: req.user.id, imageid: results.id })
-//     //     }).then(() => {
-//     //         res.sendStatus(201);
-//     //     }).catch(err => {
-//     //         console.log(err);
-//     //         res.sendStatus(500);
-//     //     })
+//    await cloudinary.v2.uploader.upload(req.body.url, function (error, result) { console.log(result); });
+//     imagesTable.insert({
+//         url: req.body.url
+//     })
+//     .then(results => {
+//         res.json(results);
+//     })
+//     .then(idOfInsertedImage => {
+//         userImagesTable.insert({
+//             userid: req.body.userid,
+//             imageid: idOfInsertedImage
+//         })
+//         .then(results => {
+//             res.json(results);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.sendStatus(500);
+//         });
+//     })
+//     .catch(err => {
+//         console.log(err);
+//         res.sendStatus(500);
+//     });
 // });
+
+router.post('/', (req, res) => {
+    imagesTable.insert({ url: req.body.url })
+        .then((results) => {
+            console.log(user)
+            return userImagesTable
+                .insert({ userid: req.user.id, imageid: results.id })
+        }).then(() => {
+            res.sendStatus(201);
+        }).catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        })
+})
 
 router.get('/:user_id', (req, res) => {
     callProcedure('spGetImagesByUser', req.params.user_id)
@@ -74,17 +62,5 @@ router.get('/:user_id', (req, res) => {
             res.sendStatus(500);
         });
 })
-
-// router.get('/:img_id', (req, res) => {
-//     cloudinary.url(req.params.img_id)
-//         .then(results => {
-//             res.json(results);
-//             console.log(results);
-//         })
-//         .catch(err => {
-//             console.log(err);
-//             res.sendStatus(500);
-//         })
-// })
 
 export default router;
