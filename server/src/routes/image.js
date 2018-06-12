@@ -39,6 +39,8 @@ router.use(tokenMiddleware);
 // });
 
 router.post('/', (req, res) => {
+    console.log('here');
+    console.log(req.body);
     imagesTable.insert({ url: req.body.url })
         .then((results) => {
             console.log(user)
