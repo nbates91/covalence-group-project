@@ -39,7 +39,7 @@ router.get('/:id', (req, res) => {
 
 // Get all of the user's images
 router.get('/:userid/images', (req, res) => {
-	callProcedure('spGetImagesByUser', req.params.userid)
+	callProcedure('spGetImagesByUser', [req.params.userid])
 		.then(results => {
 			res.json(results[0]);
 		})
@@ -105,7 +105,7 @@ router.put('/:id', async (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.sendStatus(500);	
+			res.sendStatus(500);
 		});
 });
 
